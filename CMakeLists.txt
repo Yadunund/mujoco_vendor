@@ -10,7 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_vendor_package REQUIRED)
 include(ExternalProject)
 
-set(MUJOCO_BUILD_BRANCH 3.4.0)
+set(MUJOCO_BUILD_BRANCH 3.5.0)
 ament_vendor(mujoco_vendor
   VCS_URL https://github.com/google-deepmind/mujoco.git
   VCS_VERSION ${MUJOCO_BUILD_BRANCH}
@@ -25,6 +25,9 @@ ExternalProject_Get_Property(mujoco_vendor SOURCE_DIR)
 install(DIRECTORY ${SOURCE_DIR}/simulate/
   DESTINATION opt/${PROJECT_NAME}/simulate
 )
+
+# Install environment hook to set MUJOCO_DIR
+ament_environment_hooks(hooks/mujoco_vendor.sh.in)
 
 ament_package(
   CONFIG_EXTRAS_POST "mujoco_vendor-extra.cmake.in"

@@ -1,0 +1,3 @@
+# Set MUJOCO_DIR environment variable to help downstream packages find MuJoCo
+# This is sourced by the ament_package() macro
+export MUJOCO_DIR="@CMAKE_INSTALL_PREFIX@/opt/@PROJECT_NAME@"
