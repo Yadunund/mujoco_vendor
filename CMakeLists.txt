@@ -21,9 +21,38 @@ ament_vendor(mujoco_vendor
     GLOBAL_HOOK
 )
 ExternalProject_Get_Property(mujoco_vendor SOURCE_DIR)
+ExternalProject_Get_Property(mujoco_vendor BINARY_DIR)
 
 install(DIRECTORY ${SOURCE_DIR}/simulate/
   DESTINATION opt/${PROJECT_NAME}/simulate
+)
+
+# Install MuJoCo plugin libraries to lib/ (for ros2_control and other C++ code)
+install(
+  FILES
+    ${BINARY_DIR}/lib/libelasticity.so
+    ${BINARY_DIR}/lib/libactuator.so
+    ${BINARY_DIR}/lib/libsensor.so
+    ${BINARY_DIR}/lib/libsdf_plugin.so
+  DESTINATION opt/${PROJECT_NAME}/lib
+  OPTIONAL
+)
+
+# Install plugin libraries to bin/mujoco_plugin/ (for simulate binary)
+install(
+  FILES
+    ${BINARY_DIR}/lib/libelasticity.so
+    ${BINARY_DIR}/lib/libactuator.so
+    ${BINARY_DIR}/lib/libsensor.so
+    ${BINARY_DIR}/lib/libsdf_plugin.so
+  DESTINATION opt/${PROJECT_NAME}/bin/mujoco_plugin
+  OPTIONAL
+)
+
+# Install plugin model files
+install(DIRECTORY ${SOURCE_DIR}/model/plugin/
+  DESTINATION opt/${PROJECT_NAME}/share/mujoco/model/plugin
+  OPTIONAL
 )
 
 # Install environment hook to set MUJOCO_DIR

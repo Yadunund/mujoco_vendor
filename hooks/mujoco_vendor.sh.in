@@ -1,3 +1,14 @@
 # Set MUJOCO_DIR environment variable to help downstream packages find MuJoCo
 # This is sourced by the ament_package() macro
 export MUJOCO_DIR="@CMAKE_INSTALL_PREFIX@/opt/@PROJECT_NAME@"
+
+# Set MUJOCO_PLUGIN_PATH so MuJoCo can find plugin libraries
+# Note: MuJoCo uses MUJOCO_PLUGIN_PATH (not MUJOCO_PLUGIN_DIR) to locate plugins
+export MUJOCO_PLUGIN_PATH="@CMAKE_INSTALL_PREFIX@/opt/@PROJECT_NAME@/lib"
+
+# Add plugin directory to library path
+if [ -n "${LD_LIBRARY_PATH}" ]; then
+  export LD_LIBRARY_PATH="@CMAKE_INSTALL_PREFIX@/opt/@PROJECT_NAME@/lib:${LD_LIBRARY_PATH}"
+else
+  export LD_LIBRARY_PATH="@CMAKE_INSTALL_PREFIX@/opt/@PROJECT_NAME@/lib"
+fi
